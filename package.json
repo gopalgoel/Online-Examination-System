@@ -1,0 +1,15 @@
+{
+  "name": "authsystem",
+  "version": "1.0.0",
+  "description": "A system which serves data on successfull authentication",
+  "main": "server.js",
+  "author": "Gopal Goel,Devanshu Ghosh",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "jsonwebtoken": "^7.3.0",
+    "mongoose": "^4.8.6",
+    "morgan": "^1.8.1"
+  }
+}
