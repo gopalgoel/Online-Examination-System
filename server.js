@@ -1,24 +1,42 @@
 var express = require('express');
 var app = express();
+var path = require('path');
 var bodyParser = require('body-parser');
-var morgan = require('morgan');
 var mongoose = require('mongoose');
-var jwt = require('jsonwebtoken');
-var config = require('./config');
-var port = process.env.PORT || 8000;
+var config = require(path.join(__dirname,'app','config','config'));
+var port = process.env.PORT || config.SERVER_PORT;
 
-mongoose.connect(config.database);
+var routes = require(path.join(__dirname, 'app', 'routes', 'routes'));
+
+
 app.set('secretKey', config.secretKey);
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-app.use(morgan('dev'));
-app.listen(port);
 
-//routes
-app.get('/', function(req,res){
-	res.end("Hello world! An excellent api coming soon.");
+//we can parse both json as well as form data , but we dont want to do form data
+//only JSON
+
+//http://stackoverflow.com/questions/4024271/rest-api-best-practices-where-to-put-parameters
+app.use(bodyParser.urlencoded({extended: false }));// for parsing application/x-www-form-urlencoded
+app.use(bodyParser.json());// for parsing application/json
+
+app.listen(port,function(){
+	console.log("Server Started at "+port);
 });
 
+//API ENDPOINT
+
+//VERY IMPORTANT
+routes(app);
+
+
+app.get('/', function(req,res){
+	res.send("Hello world! An excellent api coming soon.");
+});
+
+
+
+//******************************************************************
+/*REMOVE BELOW CODE ON ANALYZATION */
+/*
 var apiRouter = express.Router();
 app.use('/api',apiRouter);
 
@@ -30,3 +48,5 @@ apiRouter.use(function(req,res,next){
 apiRouter.get('/', function(req,res){
 	res.end("MiddleWare in action.");
 });
+
+*/
