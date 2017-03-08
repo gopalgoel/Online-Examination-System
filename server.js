@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 var config = require('./config');
 var port = process.env.PORT || 8000;
 
+mongoose.connect(config.database);
 app.set('secretKey', config.secretKey);
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -15,5 +16,17 @@ app.listen(port);
 
 //routes
 app.get('/', function(req,res){
-	res.end("Hello world! An excellent api coming soon");
+	res.end("Hello world! An excellent api coming soon.");
+});
+
+var apiRouter = express.Router();
+app.use('/api',apiRouter);
+
+apiRouter.use(function(req,res,next){
+	res.write("Inside MiddleWare. ");
+	next();
+});
+
+apiRouter.get('/', function(req,res){
+	res.end("MiddleWare in action.");
 });
