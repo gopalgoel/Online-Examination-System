@@ -5,15 +5,22 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require(path.join(__dirname,'app','config','config'));
 var port = process.env.PORT || config.SERVER_PORT;
-
 var routes = require(path.join(__dirname, 'app', 'routes', 'routes'));
+
+//DB CONNECTION 
+var db = mongoose.connect(config.DB_URL,function(err){
+	if(err){
+		console.log("DB connection failed at "+config.DB_URL);
+		console.log(err.message);
+	}
+	console.log("Successfully DB connected at "+config.DB_URL);
+});
 
 
 app.set('secretKey', config.secretKey);
 
 //we can parse both json as well as form data , but we dont want to do form data
 //only JSON
-
 //http://stackoverflow.com/questions/4024271/rest-api-best-practices-where-to-put-parameters
 app.use(bodyParser.urlencoded({extended: false }));// for parsing application/x-www-form-urlencoded
 app.use(bodyParser.json());// for parsing application/json
@@ -35,7 +42,7 @@ app.get('/', function(req,res){
 
 
 //******************************************************************
-/*REMOVE BELOW CODE ON ANALYZATION */
+/*I WILL STUDY EXPRESS ROUTER */
 /*
 var apiRouter = express.Router();
 app.use('/api',apiRouter);

@@ -1,23 +1,22 @@
 /*
 This will contain the DB interactions . Although it is said that , when you are at this stage 
 you dont want to handle the res or req objects , rather only the important parameters .
-The request till this point is authenticated and authorized 
+The request till this point is authenticated and authorized , validated 
 */
 
 var path = require('path');
-
+var userModel = require(path.join(__dirname,'userSchema'));
 exports.signup = function(req,res){
-    var username = req.query.username;
-    var password = req.query.password;
-    //console.log(req.body);//contains content
-    //console.log(req.params);//containing properties mapped to the named route “parameters”
-    //console.log(req.query);//contains url queries
-    if(username!=null && password!=null){
-        //we just have to save in the DB 
-        res.send("Okay registered bro");
-    }
-    else{
-        //error , GIVE ME ALL THE STUFF BRO
-        res.send("Error Hogaya Bro");
-    }
+    //only DB errors possible . other errors handled already at this point 
+    var newUser = new userModel({
+        username:req.query.username,
+        password:req.query.password,
+        role:req.query.role,
+        email:req.query.email
+    });
+    newUser.save(function(error){
+        if(error)
+            res.send("Error in Creating User");
+        res.send("User Created");
+    });
 }
