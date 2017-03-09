@@ -17,7 +17,7 @@ var db = mongoose.connect(config.DB_URL,function(err){
 });
 
 
-app.set('secretKey', config.secretKey);
+app.set('secretKey', config.secretKey); // used as secret key to JWT
 
 //we can parse both json as well as form data , but we dont want to do form data
 //only JSON
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({extended: false }));// for parsing application/x-
 app.use(bodyParser.json());// for parsing application/json
 
 app.listen(port,function(){
-	console.log("Server Started at "+port);
+	console.log("Server Started at " + port);
 });
 
 //API ENDPOINT
