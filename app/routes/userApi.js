@@ -20,4 +20,8 @@ module.exports = function(app){
 
 	app.post('/signup',user.signup);
 
+	app.get('/login',user.login);
+
+	app.post('/logout',user.logout);
+
 }
