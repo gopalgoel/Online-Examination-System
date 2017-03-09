@@ -44,8 +44,8 @@ exports.login = function(req,res){
             res.json(response(true,"UserName-Password Combo dont match","",""));
         }
         else{
-            var token = jwt.sign({ username: username , password : password },
-                                 config.secretKey);
+            console.log(JSON.stringify(docs, null, 4));
+            var token = jwt.sign(JSON.stringify(docs),config.secretKey);
             cache.set(token,"session");
             mykeys = cache.keys();
             console.log(mykeys);//debug purposes
