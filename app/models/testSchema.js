@@ -12,9 +12,10 @@ var testSchema = new mongoose.schema({
         type: Schema.Types.ObjectId,
         ref: 'user'
     }],
-    questions:[{  //one or more questions in a test
-        type: Schema.Types.ObjectId,
-        ref: 'question'
+    questions:[{
+        question: { type: Schema.Types.ObjectId, ref: 'question' },
+        marks: {type: Number, default: 4 },
+        negMarks: {type: Number, default: -1}
     }],
     timeDuration:Number, //in minutes
     prize:String
