@@ -7,24 +7,27 @@ var userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    isPasswordEncrypted: { type: Boolean, default: false },
     role: { type: String, required: true, enum: ['student', 'admin', 'teacher'] },//STUDENT,ADMIN,TEACHER
 });
 
-//schema methods
 
-userSchema.methods.encrypt= function(password){
-    // return encrypted text
-};
+// models middleware
 
 userSchema.pre('save', function(next){
-    if(this.isPasswordEncrypted == false) {
-        this.passwrod = this.encrypt(this.passwrod);
-        this.isPasswordEncrypted = true;
-    }
-    next();
+    var user = this;
+    if(!user.isModified('password')) return next();
+    bcrypt.hash(user.password,null,null,function(err,hash){
+        if(err) return next(err);
+        user.password = hash;
+        next();
+    });
 });
 
+// schema methods
+
+userSchema.methods.comparePassword = function('password'){
+    return bcrypt.compareSync(password, this.password);
+};
 
 //modelName maps to collections in plural
 var userModel = mongoose.model("user",userSchema);
