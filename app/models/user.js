@@ -1,7 +1,7 @@
 /*
-This will contain the DB interactions . Although it is said that , when you are at this stage 
+This will contain the DB interactions . Although it is said that , when you are at this stage
 you dont want to handle the res or req objects , rather only the important parameters .
-The request till this point is authenticated and authorized , validated 
+The request till this point is authenticated and authorized , validated
 */
 
 var path = require('path');
@@ -11,7 +11,7 @@ var userModel = require(path.join(__dirname,'userSchema'));
 var jwt = require('jsonwebtoken');
 
 exports.signup = function(req,res){
-    //we dont repeat the username 
+    //we dont repeat the username
     userModel.findOne({username:req.query.username},function(err,docs){
         if(err)
             res.json(response(true,err,"",""));
@@ -29,7 +29,7 @@ exports.signup = function(req,res){
                     res.json(response(true,"Db error","",""));
                 res.json(response(false,"","UserCreated",""));
             });
-        } 
+        }
     });
 }
 
