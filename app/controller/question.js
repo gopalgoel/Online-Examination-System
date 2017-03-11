@@ -30,7 +30,7 @@ exports.updateQuestion = function(req,res){
 			docs.visibility = req.query.visibility
 			docs.save(function(error){
 				if(error) res.json(response(true, "error", "", ""));
-				res.json(false,"", "question updated", docs._id);
+				else res.json(false,"", "question updated", docs._id);
 			});
 		}
 	});

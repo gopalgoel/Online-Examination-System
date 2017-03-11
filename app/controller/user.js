@@ -27,9 +27,8 @@ exports.signup = function(req,res){
                 role: req.query.role
             });
             newUser.save(function(error){
-                if(error)
-                    res.json(response(true,"error","",""));
-                res.json(response(false,"","UserCreated",""));
+                if(error) res.json(response(true,"error","",""));
+                else res.json(response(false,"","UserCreated",""));
             });
         }
     });
