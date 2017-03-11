@@ -14,7 +14,7 @@ Always follows AUTHENTICATE , AUTHORIZE , VALIDATE and then to models
 
 var path = require('path');
 var user = require(path.join(__dirname,'..','models','user'));
-
+var auth = require(path.join(__dirname,'..','auth','authenticate'));
 
 module.exports = function(app){
 
@@ -22,6 +22,6 @@ module.exports = function(app){
 
 	app.get('/login',user.login);
 
-	app.post('/logout',user.logout);
+	app.post('/logout',auth.authenticateRequest,user.logout);
 
 }
