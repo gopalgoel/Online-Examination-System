@@ -23,11 +23,11 @@ exports.updateQuestion = function(req,res){
 	questionModel.findOne({_id:id}, function(err,docs){
 		if(err) res.json(response(true,err,"",""));
 		else{
-			docs.problemStatement = req.query.problemStatement,
-			docs.choices = req.query.choices,
-			docs.points = req.query.points,
-			docs.answer = req.query.answer,
-			docs.visibility = req.query.visibility
+			docs.problemStatement = req.query.problemStatement;
+			docs.choices = req.query.choices;
+			docs.points = req.query.points;
+			docs.answer = req.query.answer;
+			docs.visibility = req.query.visibility;
 			docs.save(function(error){
 				if(error) res.json(response(true, "error", "", ""));
 				else res.json(false,"", "question updated", docs._id);

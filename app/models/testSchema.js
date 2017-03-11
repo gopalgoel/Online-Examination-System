@@ -4,6 +4,7 @@ mongoose.Promise = require('bluebird');
 var testSchema = new mongoose.schema({
     creationDate:{type: Date, default: Date.now},
     testDate:Date,
+    name: {type: String, required: true},
     owner:{  // creator of the test
         type: Schema.Types.ObjectId,
         ref: 'user'
