@@ -3,10 +3,10 @@ mongoose.Promise = require('bluebird');
 
 
 //Multiple choice question
-var questionSchema = new mongoose.schema({
+var questionSchema = new mongoose.Schema({
     creationDate:{ type:Date, default: Date.now},
     owner:{  // creator of the test
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         required: true
     },

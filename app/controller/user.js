@@ -28,7 +28,7 @@ exports.signup = function(req,res){
             });
             newUser.save(function(error){
                 if(error)
-                    res.json(response(true,"error","",""));
+                    res.json(response(true,error,"",""));
                 res.json(response(false,"","UserCreated",""));
             });
         }
