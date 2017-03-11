@@ -13,7 +13,7 @@ Always follows AUTHENTICATE , AUTHORIZE , VALIDATE and then to models
 */
 
 var path = require('path');
-var user = require(path.join(__dirname,'..','models','user'));
+var user = require(path.join(__dirname,'..','controller','user'));
 var auth = require(path.join(__dirname,'..','auth','authenticate'));
 
 module.exports = function(app){

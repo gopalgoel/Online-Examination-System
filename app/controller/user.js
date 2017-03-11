@@ -7,7 +7,8 @@ The request till this point is authenticated and authorized , validated
 var path = require('path');
 var config = require(path.join(__dirname,'..','config','config'));
 var response = require(path.join(__dirname,'..','config','response'));
-var userModel = require(path.join(__dirname,'userSchema'));
+var userModel = require(path.join(__dirname,'..','models','userSchema'));
+var bcrypt   = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 
 exports.signup = function(req,res){
@@ -19,14 +20,15 @@ exports.signup = function(req,res){
             res.json(response(true,"Username already Taken","",""));
         else{
             var newUser = new userModel({
-                username:req.query.username,
-                password:req.query.password,
-                role:req.query.role,
-                email:req.query.email
+                name: req.query.name,
+                email: req.query.email,
+                username: req.query.username,
+                password: req.query.password,
+                role: req.query.role
             });
             newUser.save(function(error){
                 if(error)
-                    res.json(response(true,"Db error","",""));
+                    res.json(response(true,"error","",""));
                 res.json(response(false,"","UserCreated",""));
             });
         }
@@ -36,16 +38,18 @@ exports.signup = function(req,res){
 exports.login = function(req,res){
     var username = req.query.username;
     var password = req.query.password;
-    userModel.findOne({username:username,password:password},function(err,docs){
-        if(err)
-            res.json(response(true,err,"",""));
-        else if(docs == null){
-            res.json(response(true,"UserName-Password Combo dont match","",""));
-        }
-        else{
-            console.log(JSON.stringify(docs, null, 4));
-            var token = jwt.sign(JSON.stringify(docs),config.secretKey);
-            res.json(response(false,"","Token Sent",token));
+    userModel.findOne({username:username},function(err,docs){
+        if(err || docs==null)
+            res.json(true,"User Not Found","","");
+        else{ 
+            if(bcrypt.compareSync(password, docs.password)){
+                console.log(JSON.stringify(docs, null, 4));
+                var token = jwt.sign(JSON.stringify(docs),config.secretKey);
+                res.json(response(false,"","Token Sent",token));
+            }
+            else{
+                res.json(response(true,"UserName-Password Combo dont match","",""));
+            }
         }
     });
 }

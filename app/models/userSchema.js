@@ -3,11 +3,11 @@ var bcrypt   = require('bcrypt-nodejs');
 mongoose.Promise = require('bluebird');//something about promises in MongoDB . Will have to read upon it
 
 var userSchema = new mongoose.Schema({
-    Name: { type: String, required: true },
+    name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, required: true, enum: ['student', 'admin', 'teacher'] },//STUDENT,ADMIN,TEACHER
+    role: { type: String, required: true, enum: ['student', 'admin', 'teacher'] }//STUDENT,ADMIN,TEACHER
 });
 
 
@@ -25,7 +25,7 @@ userSchema.pre('save', function(next){
 
 // schema methods
 
-userSchema.methods.comparePassword = function('password'){
+userSchema.methods.comparePassword = function(password){
     return bcrypt.compareSync(password, this.password);
 };
 
