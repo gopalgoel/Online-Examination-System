@@ -27,9 +27,8 @@ exports.signup = function(req,res){
                 role: req.query.role
             });
             newUser.save(function(error){
-                if(error)
-                    res.json(response(true,error,"",""));
-                res.json(response(false,"","UserCreated",""));
+                if(error) res.json(response(true,"error","",""));
+                else res.json(response(false,"","UserCreated",""));
             });
         }
     });
@@ -45,7 +44,7 @@ exports.login = function(req,res){
             if(bcrypt.compareSync(password, docs.password)){
                 console.log(JSON.stringify(docs, null, 4));
                 var token = jwt.sign(JSON.stringify(docs),config.secretKey);
-                res.json(response(false,"","Token Sent",token));
+                res.json(response(false,"","Token Sent",{"token":token, "userId": docs._id}));
             }
             else{
                 res.json(response(true,"UserName-Password Combo dont match","",""));
