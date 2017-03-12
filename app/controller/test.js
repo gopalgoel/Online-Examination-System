@@ -18,6 +18,16 @@ exports.createTest = function(req,res){
 	})
 };
 
+exports.getTest = function(req,res){
+	var testId = req.query.testId;
+	testModel.findOne({_id:testId}, function(err,docs){
+		if(err) res.json(response(true,err,"",""));
+		else{
+			res.json(false,"","success",docs);
+		}
+	});
+};
+
 exports.addModerator = function(req,res){
 	var id = req.query._id; //moderator id
 	userModel.findOne({_id:id}, function(err,docs){

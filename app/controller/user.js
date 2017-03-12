@@ -44,7 +44,7 @@ exports.login = function(req,res){
             if(bcrypt.compareSync(password, docs.password)){
                 console.log(JSON.stringify(docs, null, 4));
                 var token = jwt.sign(JSON.stringify(docs),config.secretKey);
-                res.json(response(false,"","Token Sent",token));
+                res.json(response(false,"","Token Sent",{"token":token, "userId": docs._id}));
             }
             else{
                 res.json(response(true,"UserName-Password Combo dont match","",""));

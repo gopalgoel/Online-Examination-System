@@ -13,9 +13,19 @@ exports.createQuestion = function(req,res){
 		visibility: req.query.visibility
 	})
 	newQues.save(function(error){
-		if(error) res.json(response(true, "error", "", ""));
+		if(error) res.json(response(true, error, "", ""));
 		res.json(false,"", "question created", newQues._id);
 	})
+};
+
+exports.getQuestion = function(req,res){
+	var quesId = req.query.quesId;
+	questionModel.findOne({_id:quesId}, function(err,docs){
+		if(err) res.json(response(true,err,"",""));
+		else{
+			res.json(false,"","success",docs);
+		}
+	});
 };
 
 exports.updateQuestion = function(req,res){
