@@ -18,7 +18,11 @@ var testSchema = new mongoose.Schema({
     marks: {type: Number, default: 4 },
     negMarks: {type: Number, default: -1}
     timeDuration:Number, //in minutes
-    prize:String
+    prize:String,
+    Requests: [{ //request by students to get permission to give test
+        userId: {type: mongoose.Schema.types.ObjectId, ref: 'user'},
+        isAllowed: {type: Boolean, default: false}
+    }]
 });
 
 var testModel = mongoose.model("test",testSchema);

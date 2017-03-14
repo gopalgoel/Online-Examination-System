@@ -7,8 +7,7 @@ var teacherSchema = new mongoose.Schema({
     }]
 
     tests: [ {
-        testId: { type: mongoose.Schema.types.ObjectId, ref: 'test'},
-        role: { type: String, enum: ['owner','moderator']}
+        testId: { type: mongoose.Schema.types.ObjectId, ref: 'test'}
     } ]
 });
 
