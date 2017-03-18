@@ -16,11 +16,11 @@ var testSchema = new mongoose.Schema({
         question: { type: mongoose.Schema.Types.ObjectId, ref: 'question' },
     }],
     marks: {type: Number, default: 4 },
-    negMarks: {type: Number, default: -1}
+    negMarks: {type: Number, default: -1},
     timeDuration:Number, //in minutes
     prize:String,
-    Requests: [{ //request by students to get permission to give test
-        userId: {type: mongoose.Schema.types.ObjectId, ref: 'user'},
+    requests: [{ //request by students to get permission to give test
+        userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
         isAllowed: {type: Boolean, default: false}
     }]
 });

@@ -4,14 +4,25 @@ var response = require(path.join(__dirname,'..','config','response'));
 var testModel = require(path.join(__dirname,'..','models','testSchema'));
 var userModel = require(path.join(__dirname,'..','models','userSchema'));
 var questionModel = require(path.join(__dirname,'..','models','questionSchema'));
-
+var mongoose = require('mongoose');
 exports.createTest = function(req,res){
 	var newTest = new testModel(req.body);
-	newQues.save(function(error){
-		if(error) res.json(response(true, "error", "", ""));
-		res.json(response(false,"", "test created", newTest._id));
+	newTest.save(function(err){
+		if(err) res.json(response(true, err, "", ""));
+		else res.json(response(false,"", "test created", newTest._id));
 	})
 };
+// {
+//     "name": "test Test",
+//     "description": "just trying out tests",
+//     "type": "public",
+//     "owner": "58c3945cbd9606388ad770fb",
+//     "questions":[],
+//     "marks": 4,
+//     "timeDuration":60, 
+//     "prize":"kucho nai",
+//     "Requests": []
+// }
 
 exports.getTest = function(req,res){
 	var testId = req.query.testId;
@@ -35,7 +46,7 @@ exports.updateTest = function(req,res){
 	var testId = req.query.testId;
 	testModel.updateOne({_id:testId}, req.body, function(err){
 		if(err) res.json(response(true,err,"",""));
-		else res.json(response(false,"","updated",docs));
+		else res.json(response(false,"","updated",""));
 	});
 };
 
@@ -43,7 +54,7 @@ exports.deleteTest = function(req,res){
 	var testId = req.query.testId;
 	testModel.deleteOne({_id:testId}, function(err){
 		if(err) res.json(response(true,err,"",""));
-		else res.json(response(false,"","deleted",docs));
+		else res.json(response(false,"","deleted",""));
 	});
 };
 
@@ -61,90 +72,125 @@ exports.deleteTest = function(req,res){
 // 	});
 // };
 
-exports.addQuestionToTest = function(req,res){
+exports.addQuestionToTest = function(req,res,next){
 	var quesId = req.query.quesId;
 	var testId = req.query.testId;
-	testModel.findOne({_id:testId},function(err,docs){
-		if(err) res.json(response(true,err,"",""));
-		else{
-			var testMod = docs;
-			questionModel.findOne({_id:quesId}, function(err,docs){
-				if(err) res.json(response(true,err,"",""));
-				else{
-					testMod.questions.push(quesId);
-					req.body = testMod;
-					updateTest(req,res);
-				}
-			});
-		}
-	});
+	//a very specialized type of query , doesnt return the _id field : use 1 to include
+	//IT is IMPOSSIBLE to transform doc object , just thinking it as a JS object 
+	//we need to apply special toObject() function with transform option to do that
+	//http://stackoverflow.com/questions/29407567/mongoose-id-field-cant-be-deleted
+	//use this to bypass for now
+	if(quesId!=null && testId!=null){
+		console.log('aaya');
+		testModel.findOne({_id:testId},{_id:0},function(err,docs){
+			if(err) res.json(response(true,err,"",""));
+			else if(docs==null)	res.json(response(true,"Test Not Found","",""));
+			else{
+				questionModel.findOne({_id:quesId}, function(err,qdocs){
+					if(err) res.json(response(true,err,"",""));
+					else if(qdocs==null) res.json(response(true,"Question Not Found","",""));
+					else{
+						console.log('aayaLast');
+						docs.questions.push({question:quesId});
+						req.body = docs;
+						next();
+					}
+				});
+			}
+		});
+	}
+	else res.json(response(true,"Validation Error","",""));
 };
 
-exports.addRequest = function(req,res){
+exports.addRequest = function(req,res,next){
 	var userId = req.query.userId; // userId of the person requesting permission
 	var testId = req.query.testId;
-	testModel.findOne({_id:testId}, function(err,docs){
-		if(err) res.json(response(true,err,"",""));
-		else{
-			var testMod = docs;
-			userModel.findOne({_id:userId}, function(err,docs){
-				if(err) res.json(response(true,err,"",""));
-				else{
-					testMod.requests.push({"userId": userId});
-					req.body = testMod;
-					updateTest(req,res);
-				}
-			});
-		}
-	});
+	if(testId!=null && userId!=null){
+		testModel.findOne({_id:testId},{_id:0},function(err,docs){
+			if(err) res.json(response(true,err,"",""));
+			else if(docs==null) res.json(response(true,"Test Not Found","",""));
+			else{
+				userModel.findOne({_id:userId}, function(err,udocs){
+					if(err) res.json(response(true,err,"",""));
+					else if(udocs==null) res.json(response(true,"User Not Found","",""));
+					else{
+						docs.requests.push({userId: userId});
+						req.body = docs;
+						next();
+					}
+				});
+			}
+		});
+	}
+	else res.json(response(true,"Validation Error","",""));
 };
 
 exports.getRequest = function(req,res){
 	var testId = req.query.testId;
-	testModel.findOne({_id:testId}, function(err,docs){
-		if(err) res.json(response(true,err,"",""));
-		else{
-			req.json(response(false,"","success",docs.requests));
-		}
-	});
+	if(testId!=null){
+		testModel.findOne({_id:testId}, function(err,docs){
+			if(err) res.json(response(true,err,"",""));
+			else res.json(response(false,"","success",docs.requests));
+	    });
+	}
+	else res.json(response(true,"Validation Error","",""));
 };
 
-exports.acceptRequest = function(req,res){
+exports.acceptRequest = function(req,res,next){
 	var userId = req.query.userId; // userId of the person requesting permission
 	var testId = req.query.testId;
-	testModel.findOne({_id:testId}, function(err,docs){
-		if(err) res.json(response(true,err,"",""));
-		else{
-			var testMod = docs;
-			userModel.findOne({_id:userId}, function(err,docs){
-				if(err) res.json(response(true,err,"",""));
-				else{
-					var index = testMod.requests.indexOf({"userId": userId, "isAllowed": false});
-					testMod.requests[index] = {"userId": userId, "isAllowed": true};
-					req.body = testMod;
-					updateTest(req,res);
-				}
-			});
-		}
-	});
+	if(testId!=null && userId!=null){
+		testModel.findOne({_id:testId},{_id:0},function(err,docs){
+			if(err) res.json(response(true,err,"",""));
+			else if(docs==null) res.json(response(true,"Test Not Found","",""));
+			else{
+				userModel.findOne({_id:userId}, function(err,udocs){
+					if(err) res.json(response(true,err,"",""));
+					else if(udocs==null) res.json(response(true,"User Not Found","",""));
+					else{
+						for(var index = 0;index < docs.requests.length;index++){
+							if(String(docs.requests[index].userId)===String(userId)){
+								docs.requests[index].isAllowed = true;
+								break;
+							}
+						}
+						req.body = docs;
+						next();
+					}
+				});
+			}
+		});
+	}
+	else res.json(response(true,"Validation Error","",""));
 };
 
-exports.deleteRequest = function(req,res){
+exports.deleteRequest = function(req,res,next){
 	var userId = req.query.userId; // userId of the person requesting permission
 	var testId = req.query.testId;
-	testModel.findOne({_id:testId}, function(err,docs){
-		if(err) res.json(response(true,err,"",""));
-		else{
-			var testMod = docs;
-			userModel.findOne({_id:userId}, function(err,docs){
-				if(err) res.json(response(true,err,"",""));
-				else{
-					var index = testMod.requests.indexOf({"userId": userId, "isAllowed": false});
-					if(index>-1) testMod.requests.splice(index,1);
-					req.body = testMod;
-					updateTest(req,res);
-				}
-			});
-		}
-	});
+	if(testId!=null && userId!=null){
+		testModel.findOne({_id:testId},{_id:0},function(err,docs){
+			if(err) res.json(response(true,err,"",""));
+			else if(docs==null) res.json(response(true,"Test Not Found","",""));
+			else{
+				userModel.findOne({_id:userId}, function(err,udocs){
+					if(err) res.json(response(true,err,"",""));
+					else if(udocs==null) res.json(response(true,"User Not Found","",""));
+					else{
+						for(var index = 0;index < docs.requests.length;index++){
+							if(String(docs.requests[index].userId)===String(userId)){
+								break;
+							}
+						}
+						if(index==docs.requests.length) res.json(response(true,"Request Not Found","",""));
+						else{
+							docs.requests.splice(index,1);
+							req.body = docs;
+							next();
+						}
+					}
+				});
+			}
+		});
+	}
+	else res.json(response(true,"Validation Error","",""));
 };
