@@ -7,7 +7,7 @@ var userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, required: true, enum: ['student', 'admin', 'teacher'] }//STUDENT,ADMIN,TEACHER
+    role: { type: String, required: true, enum: ['student', 'teacher'] }//STUDENT,ADMIN,TEACHER
 });
 
 

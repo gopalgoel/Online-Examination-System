@@ -20,7 +20,7 @@ var questionSchema = new mongoose.Schema({
     },
     points: { type:Number, required: true},// marks obtained on correctly solving the problem
     answer: { type:Number, min: 1, max: 4 , required: true}, //choice number
-    visibility: {type: String, enum:['public', 'private'], default: 'public'}
+    visibility: {type: String, enum:['private'], default: 'private'}
 });
 
 var questionModel = mongoose.model("question",questionSchema);

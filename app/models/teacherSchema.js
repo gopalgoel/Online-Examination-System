@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');//something about promises in MongoDB . Will have to read upon it
-var baseSchema = require('./userSchema');
 
-var userSchema = baseSchema.userSchema;
-var teacherSchema = new mongoose.Schema(userSchema);
-teacherSchema.add({
+var teacherSchema = new mongoose.Schema({
+    questions: [{
+        type: mongoose.Schema.types.ObjectId
+    }]
+
     tests: [ {
-        testId: { type: Schema.types.ObjectId, ref: 'test'},
-        role: { type: String, enum: ['owner','moderator']}
+        testId: { type: mongoose.Schema.types.ObjectId, ref: 'test'}
     } ]
 });
 
