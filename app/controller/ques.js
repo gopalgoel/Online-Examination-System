@@ -12,12 +12,14 @@ exports.createQuestion = function(req,res){
 	// 	"points": 4,
 	// 	"answer": 2
 	// }
-	var newQues = new questionModel(req.body);
-	console.log(JSON.stringify(newQues, null, 4));
-	newQues.save(function(error){
-		if(error) res.json(response(true, error, "", ""));
-		else res.json(response(false,"", "question created", newQues._id));
-	})
+	if(req.body!=null){
+		var newQues = new questionModel(req.body);
+		newQues.save(function(error){
+			if(error) res.json(response(true, error, "", ""));
+			else res.json(response(false,"", "question created", newQues._id));
+		});
+	}
+	else res.json(response(true,"Validation Error : Parameters not supplied","",""));
 };
 
 exports.getQuestion = function(req,res){
@@ -38,16 +40,22 @@ exports.getQuestion = function(req,res){
 
 exports.updateQuestion = function(req,res){
 	var quesId = req.query.quesId;
-	questionModel.updateOne({_id:quesId}, req.body,function(err){
-		if(err) res.json(response(true,err,"",""));
-		else res.json(response(false,"", "question updated", ""));
-	});
+	if(quesId!=null && req.body!=null){
+		questionModel.updateOne({_id:quesId}, req.body,function(err){
+			if(err) res.json(response(true,err,"",""));
+			else res.json(response(false,"", "question updated", ""));
+		});
+	}
+	else res.json(response(true,"Validation Error : Parameters not supplied","",""));
 };
 
 exports.deleteQuestion = function(req,res){
 	var quesId = req.query.quesId;
-	questionModel.deleteOne({_id:quesId},function(err){
-		if(err)	res.json(response(true,err,"",""));
-		else	res.json(response(false,"","question deleted",""));
-	});
+	if(quesId!=null){
+		questionModel.deleteOne({_id:quesId},function(err){
+			if(err)	res.json(response(true,err,"",""));
+			else	res.json(response(false,"","question deleted",""));
+		});
+	}
+	else res.json(response(true,"Validation Error : Parameters not supplied","",""));
 };
