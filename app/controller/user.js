@@ -39,7 +39,7 @@ exports.login = function(req,res){
     var password = req.query.password;
     userModel.findOne({username:username},function(err,docs){
         if(err || docs==null)
-            res.json(true,"User Not Found","","");
+            res.json(response(true,"User not found","",""));
         else{ 
             if(bcrypt.compareSync(password, docs.password)){
                 console.log(JSON.stringify(docs, null, 4));
