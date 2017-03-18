@@ -1,9 +1,28 @@
-controllers/ – defines your app routes and their logic
-helpers/ – code and functionality to be shared by different parts of the project
-middlewares/ – Express middlewares which process the incoming requests before handling them down to the routes
-models/ – represents data, implements business logic and handles storage
+app/
+-----controllers/ – defines your app routes and their logic
+-----helpers/ – code and functionality to be shared by different parts of the project
+-----middlewares/ – Express middlewares which process the incoming requests before handling them down to the routes
+-----models/ – represents data, implements business logic and handles storage
+-----auth/ - 
+-----routes/ -
+-----config/ - 
+public/
+----- assets/ - the base css/js/images for our app (not Angular files)
+---------- css/ - some custom css
+---------- js/ - some custom js (not Angular files)
+---------- img/
+---------- libs/ - libraries like bootstrap, angular, font-awesome
+----- app/ - the Angular part of our application
+---------- controllers/
+---------- services/
+---------- app.js
+---------- app.routes.js
+---------- views/
+--------------- pages/
+--------------- index.html
 server.js – initializes the app and glues everything together
 package.json – remembers all packages that your app depends on and their versions
+
 
 We only do DB interactions from models 
 controllers store the routes 
