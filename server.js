@@ -35,9 +35,7 @@ app.listen(port,function(){
 routes(app);
 
 
-app.get('/', function(req,res){
-    res.send("Hello world! An excellent api coming soon.");
-});
+app.use(express.static(path.join(__dirname, 'public', 'app')));
 
 
 

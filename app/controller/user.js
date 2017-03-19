@@ -12,17 +12,18 @@ var bcrypt   = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 
 exports.signup = function(req,res){
-    if(req.query.username!=null){
-        userModel.findOne({username:req.query.username},function(err,docs){
+    console.log(JSON.stringify(req.body,null,4));
+    if(req.body.username!=null){
+        userModel.findOne({username:req.body.username},function(err,docs){
             if(err) res.json(response(true,err,"",""));
             else if(docs != null) res.json(response(true,"Username already Taken","",""));
             else{
                 var newUser = new userModel({
-                    name: req.query.name,
-                    email: req.query.email,
-                    username: req.query.username,
-                    password: req.query.password,
-                    role: req.query.role
+                    name: req.body.name,
+                    email: req.body.email,
+                    username: req.body.username,
+                    password: req.body.password,
+                    role: req.body.role
                 });
                 newUser.save(function(error){
                     if(error) res.json(response(true,"error","",""));
@@ -35,6 +36,7 @@ exports.signup = function(req,res){
 }
 
 exports.login = function(req,res){
+    //console.log(req);
     var username = req.query.username;
     var password = req.query.password;
     if(username!=null && password!=null){
