@@ -4,10 +4,9 @@ mongoose.Promise = require('bluebird');//something about promises in MongoDB . W
 var teacherSchema = new mongoose.Schema({
     questions: [{
         type: mongoose.Schema.types.ObjectId
-    }]
-
+    }],
     tests: [ {
-        testId: { type: mongoose.Schema.types.ObjectId, ref: 'test'}
+        testId: { type: mongoose.Schema.Types.ObjectId, ref: 'test'}
     } ]
 });
 
