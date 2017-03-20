@@ -1,4 +1,4 @@
-var app = angular.module('main',['ngRoute']);
+var app = angular.module('main',['ngRoute', 'ngCookies']);
 
 app.controller('mainController', function(){
 	
@@ -24,10 +24,15 @@ app.config(function($routeProvider) {
 		templateUrl : 'views/pages/signup.html',
 		controller : 'signupController',
 		controllerAs: 'c'
+	})
+	.when('/logout', {
+		templateUrl : 'views/pages/logout.html',
+		controller : 'logoutController',
+		controllerAs: 'c'
 	});
 });
 	
-app.controller('loginController', ["$http", function($http){
+app.controller('loginController', ["$http", "$cookies", function($http, $cookies){
 	this.head = "Login";
 	this.formData = {};
 	this.login = function(){
@@ -39,6 +44,8 @@ app.controller('loginController', ["$http", function($http){
 		}).then(function(res){
 			//succes then redirect to userDashboard
 			console.log(res);
+			$cookies.put('token',res.data.data.token);
+			console.log($cookies.get('token'));
 		}, function(res){
 			console.log(res);
 		});
@@ -62,7 +69,30 @@ app.controller('signupController', ["$http", function($http){
 		}, function(res){
 			console.log(res);
 		});
-		
+		this.formData = {};
 	};
 }]);
 
+	
+app.controller('logoutController', ["$http", "$cookies", "$scope", function($http, $cookies, $scope){
+	this.head = "Logout";
+	this.logout = function(){
+		this.token = $cookies.get('token');
+		$scope.info = "";
+		console.log(this.token);
+		$http({
+			url: '/logout',
+			method: 'POST',
+			headers: {
+				'token': this.token
+			}
+		}).then(function(res){
+			console.log(res);
+			$scope.info = res.data.success;
+			$cookies.remove('token');
+		}, function(res){
+			console.log(res);
+		});
+	};
+	this.logout();
+}]);

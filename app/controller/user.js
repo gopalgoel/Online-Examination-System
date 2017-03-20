@@ -45,7 +45,6 @@ exports.login = function(req,res){
                 res.json(response(true,"User not found","",""));
             else{ 
                 if(bcrypt.compareSync(password, docs.password)){
-                    console.log("USER CREATED")
                     var token = jwt.sign(JSON.stringify(docs),config.secretKey);
                     res.json(response(false,"","Token Sent",{"token":token, "userId": docs._id}));
                 }
