@@ -1,4 +1,5 @@
 angular.module('routerRoutes', ['ngRoute'])
+
 .config(function($routeProvider, $locationProvider) {
 	$routeProvider.when('/', {
 		template: '<h1>Gopal</h1>'

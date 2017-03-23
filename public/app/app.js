@@ -4,9 +4,8 @@ app.controller('mainController', function(){
 	
 });
 
-app.config(function($routeProvider) {
+app.config(function($routeProvider, $locationProvider) {
 	$routeProvider
-
 	.when('/home', {
 		templateUrl : 'views/pages/home.html',
 		controller : 'mainController',
