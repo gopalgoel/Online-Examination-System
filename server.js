@@ -9,11 +9,11 @@ var routes = require(path.join(__dirname, 'app', 'routes', 'routes'));
 
 //DB CONNECTION
 var db = mongoose.connect(config.DB_URL,function(err){
-    if(err){
-        console.log("DB connection failed at "+config.DB_URL);
-        console.log(err.message);
-    }
-    console.log("Successfully DB connected at "+config.DB_URL);
+	if(err){
+		console.log("DB connection failed at "+config.DB_URL);
+		console.log(err.message);
+	}
+	console.log("Successfully DB connected at "+config.DB_URL);
 });
 
 
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({extended: false }));// for parsing application/x-
 app.use(bodyParser.json());// for parsing application/json
 
 app.listen(port,function(){
-    console.log("Server Started at " + port);
+	console.log("Server Started at " + port);
 });
 
 //API ENDPOINT
@@ -47,12 +47,12 @@ var apiRouter = express.Router();
 app.use('/api',apiRouter);
 
 apiRouter.use(function(req,res,next){
-    res.write("Inside MiddleWare. ");
-    next();
+	res.write("Inside MiddleWare. ");
+	next();
 });
 
 apiRouter.get('/', function(req,res){
-    res.end("MiddleWare in action.");
+	res.end("MiddleWare in action.");
 });
 
 */

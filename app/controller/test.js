@@ -16,15 +16,15 @@ exports.createTest = function(req,res){
 	else res.json(response(true, "Validation Error: Parameters not supplied", "", ""));
 };
 // {
-//     "name": "test Test",
-//     "description": "just trying out tests",
-//     "type": "public",
-//     "owner": "58c3945cbd9606388ad770fb",
-//     "questions":[],
-//     "marks": 4,
-//     "timeDuration":60, 
-//     "prize":"kucho nai",
-//     "Requests": []
+//	   "name": "test Test",
+//	   "description": "just trying out tests",
+//	   "type": "public",
+//	   "owner": "58c3945cbd9606388ad770fb",
+//	   "questions":[],
+//	   "marks": 4,
+//	   "timeDuration":60,
+//	   "prize":"kucho nai",
+//	   "Requests": []
 // }
 
 exports.getTest = function(req,res){
@@ -64,28 +64,28 @@ exports.deleteTest = function(req,res){
 			else res.json(response(false,"","deleted",""));
 		});
 	}
-	else res.json(response(true, "Validation Error: Parameters not supplied", "", ""));	
+	else res.json(response(true, "Validation Error: Parameters not supplied", "", ""));
 };
 
 // exports.addModerator = function(req,res){
-// 	var id = req.query._id; //moderator id
-// 	userModel.findOne({_id:id}, function(err,docs){
-// 		if(err) res.json(response(true,"No such moderator","",""));
-// 		else{
-// 			docs.moderators.push(id);
-// 			docs.save(function(error){
-// 				if(error) res.json(response(true, "error", "", ""));
-// 				else res.json(response(false,"", "moderator added"));
-// 			});
-// 		}
-// 	});
+//	var id = req.query._id; //moderator id
+//	userModel.findOne({_id:id}, function(err,docs){
+//		if(err) res.json(response(true,"No such moderator","",""));
+//		else{
+//			docs.moderators.push(id);
+//			docs.save(function(error){
+//				if(error) res.json(response(true, "error", "", ""));
+//				else res.json(response(false,"", "moderator added"));
+//			});
+//		}
+//	});
 // };
 
 exports.addQuestionToTest = function(req,res,next){
 	var quesId = req.query.quesId;
 	var testId = req.query.testId;
 	//a very specialized type of query , doesnt return the _id field : use 1 to include
-	//IT is IMPOSSIBLE to transform doc object , just thinking it as a JS object 
+	//IT is IMPOSSIBLE to transform doc object , just thinking it as a JS object
 	//we need to apply special toObject() function with transform option to do that
 	//http://stackoverflow.com/questions/29407567/mongoose-id-field-cant-be-deleted
 	//use this to bypass for now
@@ -138,7 +138,7 @@ exports.getRequest = function(req,res){
 		testModel.findOne({_id:testId}, function(err,docs){
 			if(err) res.json(response(true,err,"",""));
 			else res.json(response(false,"","success",docs.requests));
-	    });
+		});
 	}
 	else res.json(response(true,"Validation Error : Parameters not supplied","",""));
 };

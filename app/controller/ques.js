@@ -6,11 +6,11 @@ var questionModel = require(path.join(__dirname,'..','models','questionSchema'))
 exports.createQuestion = function(req,res){
 	//use this to test it locally
 	// {
-	// 	"owner": "58c3945cbd9606388ad770fb",
-	// 	"problemStatement": "What is capital of Bihar ?",
-	// 	"choices": ["yolo","patna","mumbai","hehe"],
-	// 	"points": 4,
-	// 	"answer": 2
+	//	"owner": "58c3945cbd9606388ad770fb",
+	//	"problemStatement": "What is capital of Bihar ?",
+	//	"choices": ["yolo","patna","mumbai","hehe"],
+	//	"points": 4,
+	//	"answer": 2
 	// }
 	if(req.body!=null){
 		var newQues = new questionModel(req.body);
