@@ -31,16 +31,15 @@ app.listen(port,function(){
 
 //API ENDPOINT
 
-//VERY IMPORTANT
+//VERY IMPORTAN
+
+app.use(express.static(path.join(__dirname, 'public', 'app')));
+
+app.get('/', function(req, res) {
+	res.sendFile(path.join(__dirname + '/public/app/views/index.html'));
+})
+
 routes(app);
-
-
-app.get('/', function(req,res){
-    res.send("Hello world! An excellent api coming soon.");
-});
-
-
-
 //******************************************************************
 /*I WILL STUDY EXPRESS ROUTER */
 /*
